@@ -5,6 +5,8 @@ from ament_index_python.packages import get_package_share_directory
 import launch
 import launch_ros.actions
 
+robot_name = os.getenv('ROBOT_NAME')
+nav2_path = os.getenv('NAV2_ROOT')
 
 def generate_launch_description():
     joy_config = launch.substitutions.LaunchConfiguration('joy_config')
@@ -14,7 +16,7 @@ def generate_launch_description():
     return launch.LaunchDescription([
         launch.actions.DeclareLaunchArgument('joy_config', default_value='ps3'),
         launch.actions.DeclareLaunchArgument('joy_dev', default_value='/dev/input/js0'),
-        launch.actions.DeclareLaunchArgument('config_filepath', default_value=['/home/ubuntu/slam_ws/bitdo.config.yaml']),
+        launch.actions.DeclareLaunchArgument('config_filepath', default_value=[nav2_path+'F710.config.yaml']),
 
         launch_ros.actions.Node(
             package='joy', executable='joy_node', name='joy_node',
@@ -26,5 +28,5 @@ def generate_launch_description():
         launch_ros.actions.Node(
             package='teleop_twist_joy', executable='teleop_node',
             name='teleop_twist_joy_node', parameters=[config_filepath],
-            remappings=[('cmd_vel','/rickover/cmd_vel')]),
+            remappings=[('cmd_vel',robot_name+'/cmd_vel')]),
     ])
