@@ -26,7 +26,8 @@ def generate_launch_description():
     start_async_slam_toolbox_node = Node(
         parameters=[
           slam_params_file,
-          {'use_sim_time': use_sim_time}
+          {'use_sim_time': use_sim_time},
+          {'scan_topic': robot_name+'/scan'}          
         ],
         package='slam_toolbox',
         executable='async_slam_toolbox_node',
